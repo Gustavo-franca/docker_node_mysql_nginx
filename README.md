@@ -14,7 +14,7 @@ Crie um arquivo README.md especificando quais comandos precisamos executar para 
 
 1. clone este repositório localmente (você precisará do arquivo test.env). caso não queira avance ao passo 2
 ```bash
- git clone
+ git clone https://github.com/Gustavo-franca/docker_node_mysql_nginx
 ```
 
 2. primeiro crie uma rede docker bridge
@@ -68,7 +68,7 @@ para usar voce irá precisar
 
 1. Baixar o repo
 ```bash
- git clone
+ git clone https://github.com/Gustavo-franca/docker_node_mysql_nginx
 ```
 2. dar permissão 
 ```bash
