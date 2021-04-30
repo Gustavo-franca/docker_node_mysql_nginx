@@ -80,7 +80,18 @@ chmod +x script_name.sh
 ```
 
 ## Como rodar com Docker compose (em breve ...)
-...
+
+1. clone o repositório
+
+* . rode o comando para subir os container(na primeira vez leva 2 minutos)
+```bash
+    docker-compose up -d --build
+```
+* inativar e remover os container
+```bash
+    docker-compose down
+```
+
 
 ## Pontos Que Aprendi ao Executar o Desafio
 * Criar e gerenciar conteiners pela cli do docker
