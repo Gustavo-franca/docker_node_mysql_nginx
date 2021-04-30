@@ -1,0 +1,53 @@
+version: '3'
+ 
+services: 
+  
+  mysql:
+    build: 
+      context: ./mysql
+    container_name: mysql
+    image: gustavofranca/mysql
+    networks: 
+      - desafio-net
+    volumes: 
+      - db:/var/lib/mysql
+    environment: 
+      - MYSQL_DATABASE=fullcycle
+      - MYSQL_USER=fullcycle
+      - MYSQL_PASSWORD=fullcycle
+      - MYSQL_ROOT_PASSWORD=fullcycle
+    env_file: ./test.env
+  node:
+    build :
+      context: ./node
+    container_name: node
+    image: gustavofranca/node
+    networks: 
+      - desafio-net
+    environment: 
+    - MYSQL_DATABASE=fullcycle
+    - MYSQL_USER=fullcycle
+    - MYSQL_PASSWORD=fullcycle
+    - DB_HOST=mysql
+    depends_on: 
+      - mysql
+    entrypoint: dockerize -timeout 200s -wait tcp://mysql:3306 docker-entrypoint.sh
+    command: node index.js
+    env_file: ./test.env
+  nginx:
+    build: 
+      context: ./nginx
+    container_name: nginx
+    image: gustavofranca/nginx
+    networks: 
+      - desafio-net
+    ports: 
+      - 8080:80
+    depends_on: 
+      - node
+    entrypoint: dockerize -timeout 200s -wait tcp://node:3000 /docker-entrypoint.sh
+    command: ["nginx", "-g", "daemon off;"]
+networks: 
+  desafio-net : {}
+volumes: 
+  db : {}
