@@ -79,7 +79,7 @@ chmod +x script_name.sh
 ./script_name.sh
 ```
 
-## Como rodar com Docker compose (em breve ...)
+## Como rodar com Docker compose
 
 1. clone o repositório
 
