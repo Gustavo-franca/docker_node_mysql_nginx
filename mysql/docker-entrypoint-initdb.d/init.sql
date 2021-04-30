@@ -5,6 +5,16 @@ create table if not exists modules
     description varchar(100) not null
 );
 
+create table if not exists peaple
+(
+    id int Not null auto_increment primary key,
+    name varchar(100) not null
+);
+
 insert into modules (description) values ("Docker"),
 ("Fundamentos de Arquitetura de Software"),
 ("Comunicação");
+
+insert into peaple (name) values ("Wesley"),
+("Gustavo França"),
+("Pedro");
