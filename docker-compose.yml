@@ -3,20 +3,21 @@ version: '3'
 services: 
   
   mysql:
-    build: 
-      context: ./mysql
     container_name: mysql
-    image: gustavofranca/mysql
+    image: mysql
     networks: 
-      - desafio-net
+      - db-net
     volumes: 
-      - db:/var/lib/mysql
+      - ./mysql/dbdata:/var/lib/mysql
+      - ./mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
     environment: 
       - MYSQL_DATABASE=fullcycle
       - MYSQL_USER=fullcycle
       - MYSQL_PASSWORD=fullcycle
       - MYSQL_ROOT_PASSWORD=fullcycle
+      - LANG=C.UTF-8
     env_file: ./test.env
+    command: ["mysqld","--default-authentication-plugin=mysql_native_password"]
   node:
     build :
       context: ./node
@@ -24,6 +25,7 @@ services:
     image: gustavofranca/node
     networks: 
       - desafio-net
+      - db-net
     environment: 
     - MYSQL_DATABASE=fullcycle
     - MYSQL_USER=fullcycle
@@ -31,9 +33,10 @@ services:
     - DB_HOST=mysql
     depends_on: 
       - mysql
-    entrypoint: dockerize -timeout 200s -wait tcp://mysql:3306 docker-entrypoint.sh
+    entrypoint: dockerize -timeout 250s -wait tcp://mysql:3306 docker-entrypoint.sh
     command: node index.js
     env_file: ./test.env
+    restart: always
   nginx:
     build: 
       context: ./nginx
@@ -42,12 +45,12 @@ services:
     networks: 
       - desafio-net
     ports: 
-      - 8080:80
+      - 8000:80
     depends_on: 
       - node
-    entrypoint: dockerize -timeout 200s -wait tcp://node:3000 /docker-entrypoint.sh
+    entrypoint: dockerize -timeout 250s -wait tcp://node:3000 /docker-entrypoint.sh
     command: ["nginx", "-g", "daemon off;"]
+    restart: always
 networks: 
   desafio-net : {}
-volumes: 
-  db : {}
+  db-net: {}
